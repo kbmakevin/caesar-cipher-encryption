@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""This module allows users to enter in the key to for the cipher encryption/decryption, the action to encrypt/decrypt (encrypt is the default action), and the message to encrypt/decrypt.
+"""This module allows users to enter in the key to for the cipher encryption/decryption,
+the action to encrypt/decrypt (encrypt is the default action), and the message to encrypt/decrypt.
 
 ``Examples:``
     $ python caesar_script.py --key 23 my secret message
@@ -20,6 +21,12 @@ from caesar_encryption import encrypt
 
 
 def caesar():
+    """This function reads the list of arguments passed into the script and consumes the
+    '--key', '-k', '--encrypt', '-e', '--decrypt', '-d' and key value arguments. If the
+    arguments are valid, the `encrypt` function from the `caesar_encryption` module is
+    invoked to encrypt/decrypt the message passed in as an argument, and the result is
+    printed to the console output.
+    """
     key = 1
     is_decrypt = False
     is_error = False

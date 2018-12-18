@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""This module provides functionality to encrypt or decrypt a plaintext using the Caesarian Cipher.
+"""This module provides functionality to encrypt or decrypt a plaintext using the
+    Caesarian Cipher.
 
 ``Author:`` Kevin Ma
 
@@ -11,7 +12,9 @@
 
 
 def encrypt(plaintext, key):
-    """This function encrypts/decrypts the plaintext using the key provided to ciphertext using the Caesarian Cipher method. To decrypt text, simply provide the opposite key used to encrypt the text (e.g. provide -key if key was used to encrypt the plaintext).
+    """This function encrypts/decrypts the plaintext using the key provided to ciphertext
+    using the Caesarian Cipher method. To decrypt text, simply provide the opposite key
+    used to encrypt the text (e.g. provide -key if key was used to encrypt the plaintext).
 
     ``Args:``
         plaintext (str): The text to be encrypted.
