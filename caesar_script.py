@@ -11,64 +11,40 @@ the action to encrypt/decrypt (encrypt is the default action), and the message t
 
 ``Author:`` Kevin Ma
 
-``Date:`` 2018-12-18
+``Date:`` 2018-12-21
 
-``Version:`` 1.0.0
+``Version:`` 1.1.0
 """
-import sys
+import argparse
 
 from caesar_encryption import encrypt
 
 
 def caesar():
-    """This function reads the list of arguments passed into the script and consumes the
-    '--key', '-k', '--encrypt', '-e', '--decrypt', '-d' and key value arguments. If the
-    arguments are valid, the `encrypt` function from the `caesar_encryption` module is
-    invoked to encrypt/decrypt the message passed in as an argument, and the result is
-    printed to the console output.
+    """This function uses the argparse module to parse the
+    arguments passed in from the command line and encrypts/decrypts
+    the message using the `encrypt` function from the `caesar_encryption`
+    module. Error and handling and usage (e.g. --help|-h) is automatically
+    generated for us since we are using the python std lib argparse.
     """
-    key = 1
-    is_decrypt = False
-    is_error = False
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-e', '--encrypt', action='store_true')
+    group.add_argument('-d', '--decrypt', action='store_true')
 
-    for idx, arg in enumerate(sys.argv):
-        if arg in ['--key', '-k'] and len(sys.argv) > idx+1:
-            key = int(sys.argv[idx+1])
-            del sys.argv[idx]  # the --key or k
-            del sys.argv[idx]  # the actual key arg
-            break
+    parser.add_argument('text', nargs='*')
+    parser.add_argument('-k', '--key', type=int, default=1)
 
-    # cannot ensure order of args, so we look for key first and after consuming the args
-    # we loop through args again to identify the encrpyt/decrypt flag
-    for idx, arg in enumerate(sys.argv):
-        if arg in ['--encrypt', '-e']:
-            del sys.argv[idx]
-            break
+    args = parser.parse_args()
 
-        elif arg in ['--decrypt', '-d']:
-            is_decrypt = True
-            del sys.argv[idx]
-            break
+    text_string = ' '.join(args.text)
+    key = args.key
 
-    # to decrypt caesarian cipher, simply use the opposite of the key
-    if is_decrypt:
+    if args.decrypt:
         key = -key
 
-    if len(sys.argv) == 1:
-        # this would mean we simply have ['caesar_scripy.py'] in argsv, there is no msg to encrypt or decrypt!
-        is_error = True
-    else:
-        for arg in sys.argv:
-            if arg.startswith('-'):
-                # we have already consumed all expected flags, the only remaining arg
-                # should be the msg to encrypt/decrypt!
-                is_error = True
-
-    if is_error:
-        print(
-            'Usage: python {} [ --key|k <key> ] [ --encrypt|decrypt|e|d ] <text>'.format(sys.argv[0]))
-    else:
-        print(encrypt(' '.join(sys.argv[1:]), key))
+    ciphertext = encrypt(text_string, key)
+    print(ciphertext)
 
 
 if __name__ == "__main__":
