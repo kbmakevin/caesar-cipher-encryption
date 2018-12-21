@@ -14,10 +14,12 @@ to assist us.
 
 ``Date:``   2018-12-21
 
-``Version:`` 1.0.0
+``Version:`` 1.1.0
 """
 import enchant
 import click
+
+from tqdm import tqdm
 
 from caesar_encryption import encrypt
 
@@ -44,7 +46,9 @@ def crack_caesar(input_file, output_file):
     ciphertext = input_file.read()
     en_dict = enchant.Dict('en_US')
     max_num_valid_words = 0
-    for key in range(1, 26):
+    # tqdm module enables us to wrap ANY iterable with `tdqm(iterable` to turn our loops
+    # into a smart progress bar!
+    for key in tqdm(range(1, 26)):
         plaintext = encrypt(ciphertext, -key)
         num_valid_words = 0
         for word in plaintext.split(' '):
