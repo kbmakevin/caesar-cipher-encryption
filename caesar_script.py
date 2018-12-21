@@ -13,38 +13,31 @@ the action to encrypt/decrypt (encrypt is the default action), and the message t
 
 ``Date:`` 2018-12-21
 
-``Version:`` 1.1.0
+``Version:`` 1.2.0
 """
-import argparse
+import click
 
 from caesar_encryption import encrypt
 
 
-def caesar():
-    """This function uses the argparse module to parse the
+@click.command()
+# nargs denotes how many words expected for this argument
+# -1 allows us to provide any number of words
+@click.argument('text', nargs=-1)
+@click.option('--key', '-k', default=1, help='The amount to shift by')
+@click.option('--decrypt/--encrypt', '-d/-e', help='The action to invoke on the text')
+def caesar(text, key, decrypt):
+    """This function uses the click module to parse the
     arguments passed in from the command line and encrypts/decrypts
     the message using the `encrypt` function from the `caesar_encryption`
-    module. Error and handling and usage (e.g. --help|-h) is automatically
-    generated for us since we are using the python std lib argparse.
+    module. Error and handling and usage (e.g. --help) is automatically
+    generated for us.
     """
-    parser = argparse.ArgumentParser()
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-e', '--encrypt', action='store_true')
-    group.add_argument('-d', '--decrypt', action='store_true')
-
-    parser.add_argument('text', nargs='*')
-    parser.add_argument('-k', '--key', type=int, default=1)
-
-    args = parser.parse_args()
-
-    text_string = ' '.join(args.text)
-    key = args.key
-
-    if args.decrypt:
+    text_string = ' '.join(text)
+    if decrypt:
         key = -key
-
     ciphertext = encrypt(text_string, key)
-    print(ciphertext)
+    click.echo(ciphertext)
 
 
 if __name__ == "__main__":
